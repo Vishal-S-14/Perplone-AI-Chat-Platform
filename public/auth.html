@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perplone - Login</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      /* Dark Mode Palette */
+      --primary: #38bdf8;
+      /* Sky Blue for Accents */
+      --primary-hover: #0ea5e9;
+
+      /* Deep Dark Backgrounds */
+      --bg-deep: #000000;
+      /* Pure Black Base */
+      --bg-gradient-1: #0f172a;
+      /* Slate 900 */
+      --bg-gradient-2: #020617;
+      /* Slate 950 */
+
+      /* Glass Components */
+      --glass-bg: rgba(15, 23, 42, 0.65);
+      /* Darker, more opaque glass */
+      --glass-border: rgba(255, 255, 255, 0.08);
+      /* Fainter border */
+
+      /* Text Colors */
+      --text-main: #f8fafc;
+      /* Slate 50 */
+      --text-muted: #94a3b8;
+      /* Slate 400 */
+
+      --error: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+
+      /* Rich Dark Gradient Background */
+      background: radial-gradient(circle at top left, #1e293b, transparent 40%),
+        radial-gradient(circle at bottom right, #172554, transparent 40%),
+        #020617;
+      /* Deepest Slate Base */
+      background-attachment: fixed;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient Glow Effects - Subtle & Deep */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Floating Orbs - Darker & Subtler */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.25;
+      animation: floatOrb 20s infinite ease-in-out alternate;
+    }
+
+    .orb-1 {
+      width: 300px;
+      height: 300px;
+      background: #3b82f6;
+      /* Blue Glow */
+      top: -50px;
+      left: -50px;
+    }
+
+    .orb-2 {
+      width: 400px;
+      height: 400px;
+      background: #6366f1;
+      /* Indigo Glow */
+      bottom: -100px;
+      right: -100px;
+      animation-delay: -5s;
+    }
+
+    @keyframes floatOrb {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        transform: translate(30px, 40px) scale(1.1);
+      }
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 3rem 2.5rem;
+
+      /* Darker Glass Card */
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+
+      /* Deep Shadow for Pop */
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2),
+        0 20px 40px -10px rgba(0, 0, 0, 0.6);
+
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(30px);
+      position: relative;
+      z-index: 10;
+    }
+
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Glossy reflection on top */
+    .auth-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      padding: 1px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo img {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .logo img:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .input-group {
+      position: relative;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      transition: color 0.3s ease;
+      pointer-events: none;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 2.75rem;
+      font-size: 0.95rem;
+      color: #fff;
+
+      /* Darker Input Background */
+      background: rgba(2, 6, 23, 0.5);
+      border: 1px solid var(--glass-border);
+
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: var(--primary);
+      background: rgba(2, 6, 23, 0.8);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+      /* Subtler focus glow */
+    }
+
+    .input-group input:focus+i {
+      color: var(--primary);
+    }
+
+    .input-group input::placeholder {
+      color: #64748b;
+    }
+
+    .auth-btn {
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f172a;
+      background: var(--primary);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .auth-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.5);
+    }
+
+    .auth-btn:active {
+      transform: translateY(0);
+    }
+
+    .auth-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .toggle-text {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .toggle-link:hover {
+      color: #60a5fa;
+      text-decoration: underline;
+    }
+
+    .error-message {
+      display: none;
+      margin-top: 0.5rem;
+      padding: 0.75rem;
+      font-size: 0.85rem;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 8px;
+      color: #fca5a5;
+      text-align: center;
+      animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      75% {
+        transform: translateX(5px);
+      }
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(15, 23, 42, 0.3);
+      border-top-color: #0f172a;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .auth-btn.loading .spinner {
+      display: block;
+    }
+
+    .auth-btn.loading span {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Ambient Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="auth-container">
+    <div class="logo">
+      <img src="Perplone.png" alt="Logo">
+    </div>
+
+    <div class="auth-header">
+      <h1 id="authTitle">Welcome Back</h1>
+      <p id="authSubtitle">Enter your details to sign in</p>
+    </div>
+
+    <form class="auth-form" id="authForm">
+      <!-- Username / Email Field -->
+      <div class="input-group">
+        <input type="text" id="username" placeholder="Username or Email" required>
+        <i class="fas fa-user"></i>
+      </div>
+
+      <!-- Email Field (Hidden by default, used for Sign Up) -->
+      <div class="input-group" id="emailGroup" style="display: none;">
+        <input type="email" id="email" placeholder="Email Address">
+        <i class="fas fa-envelope"></i>
+      </div>
+
+      <!-- Password Field -->
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Password" required>
+        <i class="fas fa-lock"></i>
+      </div>
+
+      <button type="submit" class="auth-btn" id="authBtn">
+        <span>Sign In</span>
+        <div class="spinner"></div>
+      </button>
+
+      <div class="error-message" id="errorMessage"></div>
+    </form>
+
+    <div class="toggle-text">
+      <span id="toggleText">Don't have an account?</span>
+      <span class="toggle-link" id="toggleLink">Sign Up</span>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    // --- DOM Elements ---
+    const authTitle = document.getElementById('authTitle');
+    const authSubtitle = document.getElementById('authSubtitle');
+    const authForm = document.getElementById('authForm');
+    const authBtn = document.getElementById('authBtn');
+    const toggleLink = document.getElementById('toggleLink');
+    const toggleTextSpan = document.getElementById('toggleText');
+    const emailGroup = document.getElementById('emailGroup');
+    const errorMessage = document.getElementById('errorMessage');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const emailInput = document.getElementById('email');
+
+    // --- Configuration ---
+    const BACKEND_URL = "http://localhost:3000";
+    let isSignIn = true;
+
+    // --- Functions ---
+
+    function toggleAuthMode() {
+      isSignIn = !isSignIn;
+
+      // Animate transition (simple fade)
+      const container = document.querySelector('.auth-container');
+      container.style.transform = "scale(0.98)";
+      setTimeout(() => container.style.transform = "scale(1)", 150);
+
+      if (isSignIn) {
+        authTitle.textContent = 'Welcome Back';
+        authSubtitle.textContent = 'Enter your details to sign in';
+        authBtn.querySelector('span').textContent = 'Sign In';
+        toggleTextSpan.textContent = "Don't have an account?";
+        toggleLink.textContent = 'Sign Up';
+
+        emailGroup.style.display = 'none';
+        usernameInput.placeholder = 'Username or Email';
+        usernameInput.parentElement.querySelector('i').className = 'fas fa-user';
+        emailInput.required = false;
+      } else {
+        authTitle.textContent = 'Create Account';
+        authSubtitle.textContent = 'Join us today! It takes seconds.';
+        authBtn.querySelector('span').textContent = 'Sign Up';
+        toggleTextSpan.textContent = "Already have an account?";
+        toggleLink.textContent = 'Sign In';
+
+        emailGroup.style.display = 'block';
+        usernameInput.placeholder = 'Username';
+        usernameInput.parentElement.querySelector('i').className = 'fas fa-user-tag';
+        emailInput.required = true;
+      }
+
+      errorMessage.style.display = 'none';
+      authForm.reset();
+    }
+
+    function setLoading(isLoading) {
+      if (isLoading) {
+        authBtn.classList.add('loading');
+        authBtn.disabled = true;
+      } else {
+        authBtn.classList.remove('loading');
+        authBtn.disabled = false;
+      }
+    }
+
+    function showError(msg) {
+      errorMessage.textContent = msg;
+      errorMessage.style.display = 'block';
+    }
+
+    async function handleAuth() {
+      const usernameOrEmail = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+      const email = emailInput.value.trim();
+      const username = usernameInput.value.trim(); // For signup
+
+      setLoading(true);
+      errorMessage.style.display = 'none';
+
+      let endpoint = '';
+      let body = {};
+
+      if (isSignIn) {
+        endpoint = '/api/signin';
+        // Auto-detect email vs username
+        const isEmail = usernameOrEmail.includes('@');
+        body = {
+          password: password
+        };
+        if (isEmail) body.email = usernameOrEmail;
+        else body.username = usernameOrEmail;
+      } else {
+        // Sign Up
+        if (!username || !email || !password) {
+          showError('Please fill in all fields.');
+          setLoading(false);
+          return;
+        }
+        endpoint = '/api/signup';
+        body = {
+          username,
+          email,
+          password
+        };
+      }
+
+      try {
+        const response = await fetch(`${BACKEND_URL}${endpoint}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Authentication failed');
+        }
+
+        // Success
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('username', data.username);
+
+        // Optional: Success animation before redirect
+        authBtn.querySelector('span').textContent = 'Success!';
+        authBtn.style.background = '#22c55e'; // Green
+
+        setTimeout(() => {
+          if (data.role === 'admin') {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        }, 800);
+
+      } catch (error) {
+        console.error('Auth error:', error);
+        showError(error.message);
+        setLoading(false);
+      }
+    }
+
+    // --- Event Listeners ---
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      handleAuth();
+    });
+
+    toggleLink.addEventListener('click', toggleAuthMode);
+  </script>
+</body>
+
+</html>
