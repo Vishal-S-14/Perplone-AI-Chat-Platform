@@ -92,6 +92,14 @@ Open the application at:
 http://localhost:3000/auth.html
 ```
 
+Open Index.html:
+
+Change the OPENROUTER_API_KEY.
+
+```text
+const OPENROUTER_API_KEY = "YOUR_OLD_KEY";
+```
+
 ## Authentication Flow
 
 1. A new user registers with a username, email, and password.
