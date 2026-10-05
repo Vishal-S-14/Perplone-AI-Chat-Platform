@@ -94,9 +94,9 @@ http://localhost:3000/auth.html
 
 Open Index.html:
 
-Change the OPENROUTER_API_KEY.
+Change the OPENROUTER_API_KEY:
 
-```text
+```code
 const OPENROUTER_API_KEY = "YOUR_OLD_KEY";
 ```
 
